@@ -26,6 +26,9 @@ export type Axis = "choreography" | "feel" | "staging";
 export type Severity = "major" | "minor" | "note";
 
 export interface Evidence {
+  /** The measured movement or layer event this evidence is about, when there is one. */
+  movementId?: string;
+  eventId?: string;
   layerId: number;
   layerName: string;
   property?: string;
@@ -78,11 +81,11 @@ function continuous(m: Movement, score: MotionScore): boolean {
 }
 
 function evidenceFor(m: Movement, detail: string): Evidence {
-  return { layerId: m.layerId, layerName: m.layerName, property: m.propertyName, start: m.startTime, end: m.endTime, detail };
+  return { movementId: m.id, layerId: m.layerId, layerName: m.layerName, property: m.propertyName, start: m.startTime, end: m.endTime, detail };
 }
 
 function eventEvidence(e: LayerEvent, detail: string): Evidence {
-  return { layerId: e.layerId, layerName: e.layerName, start: e.startTime, end: e.endTime, detail };
+  return { eventId: e.id, layerId: e.layerId, layerName: e.layerName, start: e.startTime, end: e.endTime, detail };
 }
 
 const seconds = (s: number) => `${Math.round(s * 1000)} ms`;

@@ -3,6 +3,7 @@
  * carelessly and with care, so detectors can be checked on both.
  */
 import type { CompReading } from "../../src/lens/types.js";
+import { keyedTrack } from "./keyed.js";
 import { ease, layer, reading, samplesFor, track, type Ease } from "./synth.js";
 
 const TOTAL = 3;
@@ -35,5 +36,21 @@ export function carefulTitleCard(): CompReading {
   return reading(
     names.map((name, i) => entrance(name, i + 1, 0.1 + i * 0.08, i === 0 ? 0.8 : 0.5 + i * 0.03, ease.outCubic)),
     { name: "Title Card (careful)" },
+  );
+}
+
+/** The careless card with real keys, so recipes can edit it. */
+export function keyedCarelessTitleCard(): CompReading {
+  return reading(
+    names.map((name, i) => {
+      const properties = [keyedTrack("opacity", [{ from: [0], to: [100], start: 0, duration: 0.5 }], { total: TOTAL })];
+      if (i < 4) {
+        properties.push(
+          keyedTrack("position", [{ from: [960, 640 + i * 60], to: [960, 540 + i * 60], start: 0, duration: 0.5 }], { total: TOTAL }),
+        );
+      }
+      return layer(name, properties, { id: i + 1, inPoint: 0 });
+    }),
+    { name: "Title Card (careless, keyed)" },
   );
 }
