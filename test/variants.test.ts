@@ -64,6 +64,16 @@ describe("variants fix what they claim to (predicted)", () => {
     expect(after).toContain("fade-only-entrance");
   });
 
+  it("no variant introduces a tell that was not there before", () => {
+    const { reading, score, result } = analyse();
+    const before = new Set(result.findings.map((f) => f.detector));
+    for (const variant of suggestVariants(result, score).variants) {
+      const predicted = predictScore(reading, planVariant(reading, score, variant.label, variant.steps));
+      const introduced = critique(predicted.score, predicted.reading).findings.filter((f) => !before.has(f.detector));
+      expect(introduced.map((f) => `${variant.label}: ${f.detector}`)).toEqual([]);
+    }
+  });
+
   it("the 'Choreography' variant leaves the easing alone", () => {
     const { reading, score, result } = analyse();
     const choreography = suggestVariants(result, score).variants[0]!;

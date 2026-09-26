@@ -28,9 +28,9 @@ describe("easeSegment", () => {
     const a = key(0, [0]);
     const b = key(0.5, [100]);
     const { out, in: arrive } = easeSegment(a, b, { spatial: false, dimensions: 1 }, EASE_PRESETS["ease-out"]);
-    // Average speed 200/s; ease-out leaves at y1/x1 = 6.25 × average and arrives at rest.
-    expect(out[0]).toEqual({ speed: 1250, influence: 16 });
-    expect(arrive[0]).toEqual({ speed: 0, influence: 70 });
+    // Average speed 200/s; ease-out leaves at y1/x1 ≈ 3.03 × average and arrives at rest.
+    expect(out[0]).toEqual({ speed: 606.0606, influence: 33 });
+    expect(arrive[0]).toEqual({ speed: 0, influence: 32 });
   });
 
   it("gives a spatial property exactly one ease, and others one per dimension", () => {

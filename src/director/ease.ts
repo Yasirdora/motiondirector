@@ -9,8 +9,12 @@ export type Bezier = readonly [number, number, number, number];
  * CSS and motion systems, so "ease out" means what it means everywhere else.
  */
 export const EASE_PRESETS = {
-  /** Fast start, long gentle arrival. The default for entrances. */
-  "ease-out": [0.16, 1, 0.3, 1],
+  /**
+   * Fast start, gentle arrival: the default for entrances. Cubic rather than
+   * expo: an expo ease-out spends about 45% of its time on the last 5% of the
+   * distance, which the Critic (rightly) measures as creeping into place.
+   */
+  "ease-out": [0.33, 1, 0.68, 1],
   /** A softer arrival for small or secondary elements. */
   "soft-out": [0.25, 0.46, 0.45, 0.94],
   /** Accelerate and decelerate: for moves between two resting states. */
