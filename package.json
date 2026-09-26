@@ -24,7 +24,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check": "npm run typecheck && npm test"
+    "check": "npm run typecheck && npm test && npm run build && npm run smoke",
+    "smoke": "node scripts/smoke.mjs"
   },
   "keywords": [
     "after-effects",
