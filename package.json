@@ -12,6 +12,7 @@
   "files": [
     "dist/src",
     "jsx",
+    "assets",
     "README.md",
     "LICENSE"
   ],
