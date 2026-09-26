@@ -1,4 +1,4 @@
-// Motion Director — JSON for ExtendScript (ES3).
+// Motion Director - JSON for ExtendScript (ES3).
 //
 // A parser that never calls eval: request files are data, and data must not
 // be able to run as code (some bridges fall back to eval("(" + text + ")")).

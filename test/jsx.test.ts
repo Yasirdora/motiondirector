@@ -19,6 +19,12 @@ describe("ExtendScript sources", () => {
     });
   }
 
+  it("is plain ASCII, because ExtendScript can misread UTF-8 source without a byte-order mark", () => {
+    for (const file of readdirSync(JSX).filter((f) => f.endsWith(".jsx"))) {
+      expect(readFileSync(path.join(JSX, file), "utf8")).toMatch(/^[\x00-\x7f]*$/);
+    }
+  });
+
   it("never evaluates request data as code", () => {
     for (const file of readdirSync(JSX).filter((f) => f.endsWith(".jsx"))) {
       const source = readFileSync(path.join(JSX, file), "utf8").replace(/\/\/.*$/gm, "");
@@ -106,7 +112,7 @@ describe("dispatcher and operations (fake After Effects)", () => {
     const r = call<{ compId: number; layerMap: [number, number][] }>("duplicate_comp", { compId: comp.id, label: "Variant B" }, true);
     expect(r.ok).toBe(true);
     const copy = ae.project.itemByID(r.result.compId) as CompItem;
-    expect(copy.name).toBe("Logo Reveal — Variant B");
+    expect(copy.name).toBe("Logo Reveal \u2014 Variant B");
     expect(copy.comment).toMatch(/^motion-director-rehearsal/);
     expect(r.result.layerMap).toEqual([
       [logo.id, copy.layer(1).id],

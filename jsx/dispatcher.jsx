@@ -1,6 +1,6 @@
-// Motion Director — dispatcher, run inside After Effects for every request.
+// Motion Director - dispatcher, run inside After Effects for every request.
 //
-// Launched by `osascript … DoScript` on macOS (which first sets
+// Launched by `osascript ... DoScript` on macOS (which first sets
 // $.global.MOTION_DIRECTOR_MAILBOX) or by `AfterFX.exe -r` on Windows (which
 // cannot pass data, so the mailbox is found in the shared temp folder).
 //

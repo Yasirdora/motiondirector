@@ -1,4 +1,4 @@
-// Motion Director — the operations the dispatcher may run (ES3).
+// Motion Director - the operations the dispatcher may run (ES3).
 //
 // Every operation takes plain JSON arguments and returns plain JSON. Layers
 // and comps are addressed by After Effects' stable ids, never by index,
@@ -330,7 +330,7 @@ $.global.MD_OPS = (function () {
             var copy = original.duplicate();
             var map = [];
             var i;
-            copy.name = original.name + " — " + String(args.label || "rehearsal");
+            copy.name = original.name + " \u2014 " + String(args.label || "rehearsal");
             copy.comment = REHEARSAL_MARK + " of " + original.id;
             copy.parentFolder = rehearsalFolder();
             for (i = 1; i <= original.numLayers; i += 1) { map.push([original.layer(i).id, copy.layer(i).id]); }
@@ -368,7 +368,7 @@ $.global.MD_OPS = (function () {
                     throw refused(e.message);
                 }
                 if (edits[i].expect && !sameKeys(readKeys(property), edits[i].expect)) {
-                    drifted.push(layer.name + " › " + property.name);
+                    drifted.push(layer.name + " \u203a " + property.name);
                 }
                 resolved.push(property);
             }
