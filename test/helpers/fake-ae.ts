@@ -24,6 +24,7 @@ import {
 } from "node:fs";
 import path from "node:path";
 import vm from "node:vm";
+import { encodePng } from "../../src/ae/png.js";
 import { valueAt } from "../../src/lens/evaluate.js";
 import type { Keyframe, Vec } from "../../src/lens/types.js";
 
@@ -314,13 +315,13 @@ export class CompItem {
   }
 
   saveFrameToPng(time: number, file: FakeFile): void {
-    // A 1×1 PNG is enough to exercise the path; the server checks sizes itself.
-    const png = Buffer.from(
-      "89504e470d0a1a0a0000000d4948445200000001000000010806000000" +
-        "1f15c4890000000d49444154789c6360000002000154a24f5d0000000049454e44ae426082",
-      "hex",
-    );
-    writeFileSync(file.fsName, png);
+    // A flat frame at the resolution the comp is set to, the way After Effects
+    // honours resolutionFactor; the server checks the size it receives.
+    const factor = this.resolutionFactor[0] ?? 1;
+    const width = Math.ceil(this.width / factor);
+    const height = Math.ceil(this.height / factor);
+    const shade = Math.round((time * 97) % 255);
+    writeFileSync(file.fsName, encodePng(width, height, 8, [shade, shade, shade, 255]));
     this.project.frames.push({ compId: this.id, time, factor: [...this.resolutionFactor] });
   }
 }
@@ -330,7 +331,8 @@ export class FakeProject {
   file: FakeFile | null = null;
   activeItem: CompItem | null = null;
   frames: { compId: number; time: number; factor: number[] }[] = [];
-  private seq = 1;
+  // Starts high so fake item and layer ids never look like the small ids tests use.
+  private seq = 1000;
 
   nextId(): number {
     return this.seq++;
@@ -437,6 +439,19 @@ export class FakeFolder {
         .map((n) => new FakeFile(path.join(this.fsName, n))),
     );
   }
+}
+
+/** Build a comp in the fake from a reading's keys, keeping each layer's id. */
+export function compFromReading(project: FakeProject, reading: import("../../src/lens/types.js").CompReading): CompItem {
+  const comp = project.addComp(reading.name, reading.width, reading.height, reading.frameRate, reading.duration);
+  for (const layer of reading.layers) {
+    const fake = comp.addLayer(new FakeLayer(layer.id, layer.name, layer.inPoint, layer.outPoint));
+    for (const track of layer.properties) {
+      const leaf = track.path[track.path.length - 1] as string;
+      fake.prop(leaf).keys = structuredClone(track.keys);
+    }
+  }
+  return comp;
 }
 
 export interface FakeAfterEffects {
