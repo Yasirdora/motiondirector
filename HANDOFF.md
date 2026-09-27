@@ -73,7 +73,7 @@ jsx/ (runs inside After Effects, ES3, ASCII only)
 
 ## 5. What we learned from the ten existing MCPs
 
-Full study with file and line references: see the blueprint in the conversation history, summarised here. directorhomaidm-ops has no license: never copy code from it.
+Full study with file and line references: [docs/study.md](docs/study.md) (37 findings, 7 flaws the authors had not documented), summarised here. directorhomaidm-ops has no license: never copy code from it.
 
 - **Engine Room** (`Engine-Room-Games/after-effects-mcp`): the best engineering. Read its `docs/fragile-areas-*.md` before touching the bridge, frames, text, shapes or mogrt. Measured traps: async `saveFrameToPng` and stale frames, 16-bit PNGs, undo groups, `$.evalFile` scope, text justification drift, expression errors only in `expressionError`, loopback is not a security boundary.
 - **kumo** (`kumoproductions/mcp-aftereffects`): the no-panel transport we adopted (DoScript/`-r`, per-id mailbox, busy lock, dialog suppression). Its flaws we avoided: timeouts after pickup marked retryable; partial application on throw; blind `project.undo`.
