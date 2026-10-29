@@ -1,4 +1,4 @@
-# Handoff: Motion Director
+# Design: Motion Director
 
 This document is for the engineer who continues this project. Read all of it before changing anything. It says what exists, why it is shaped this way, what is proven and what is not, what to do next in order, and the rules that keep the project trustworthy.
 
