@@ -2,7 +2,7 @@
 
 **Direct motion in After Effects like a creative director.** Motion Director is an MCP server that lets an AI (Claude Code, Claude Desktop, or any MCP client) understand the motion in your comps: it measures every movement, explains in plain words why something feels cheap, heavy or floaty, tries changes on copies you can watch side by side at true speed, and applies only what you choose, in one undo step, restorable at any time.
 
-> Status: early. Everything below is built and tested against a faithful fake of After Effects' scripting engine. It has **not yet been run against a real After Effects install**; see [HANDOFF.md](HANDOFF.md) for exactly what that means.
+> Status: early. Everything below is built and tested against a faithful fake of After Effects' scripting engine. It has **not yet been run against a real After Effects install**; see [DESIGN.md](DESIGN.md) for exactly what that means.
 
 ## What it does
 
@@ -36,7 +36,7 @@ Motion Director calls no AI service and needs no API key. Your AI client sends w
 
 ## How it's built
 
-TypeScript server; ExtendScript (ES3) inside After Effects; a per-request file mailbox launched through `osascript DoScript` (macOS) or `AfterFX -r` (Windows). Requests name operations and carry data, never code. Details, design decisions and what is left to do are in [HANDOFF.md](HANDOFF.md).
+TypeScript server; ExtendScript (ES3) inside After Effects; a per-request file mailbox launched through `osascript DoScript` (macOS) or `AfterFX -r` (Windows). Requests name operations and carry data, never code. Details, design decisions and what is left to do are in [DESIGN.md](DESIGN.md).
 
 ```bash
 npm run check   # typecheck, 167 tests, build, stdio smoke test
